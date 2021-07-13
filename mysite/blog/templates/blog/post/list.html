@@ -1,0 +1,42 @@
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+
+{% block title %}My Blog{% endblock %}
+
+{% block content %}
+
+    <h1>Blogs</h1>
+    {% if tag %}
+        <h2>Posts tagged with "{{ tag.name }}"</h2>
+    {% endif %}
+    {% for post in posts %}
+        <div class="card mt-2">
+          <div class="card-body">
+              <h5 class="card-title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h5>
+              {% comment %}taggit filter markdown{% endcomment %}
+              <p class="card-text">{{ post.body|markdown|truncatewords_html:30 }}</p>
+              Tags:
+           {% for tag in post.tags.all %}
+                <a class="card-link" href="{% url "blog:post_list_by_tag" tag.slug %}"  >{{ tag.name }}</a>
+              {% comment %}forloop.last	True if this is the last time through the loop{% endcomment %}
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+              <p><h6 class="card-subtitle mb-2 text-muted"> {{ post.author }}&nbsp;&nbsp;  <span class="small">{{ post.publish }}</span> </h6></p>
+          </div>
+        </div>
+    {% comment %}
+        <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+        <p class="tags">
+            Tags: 
+            {% for tag in post.tags.all %}
+                <a href="{% url "blog:post_list_by_tag" tag.slug %}"  class="card-link">{{ tag.name }}</a>
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        <p class="date">Published {{ post.publish }} by {{ post.author }}</p>
+        {{ post.body|markdown|truncatewords_html:30 }}
+    {% endcomment %}
+    {% endfor %}
+    
+    {% include "pagination.html" with page=posts %}
+{% endblock %}

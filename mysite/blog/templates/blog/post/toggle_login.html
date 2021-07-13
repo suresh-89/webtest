@@ -1,0 +1,34 @@
+{% if user.is_authenticated %}
+<ul class="nav navbar-nav navbar-right">
+  {% comment %}<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+        aria-expanded="false">{{ user.username }} <span class="caret"></span></a>
+    <ul class="dropdown-menu" role="menu">
+      <li><a href="{% url "marcador_bookmark_user" user.username %}">
+          My bookmarks</a></li>
+      
+      <li><a href="{% url "blog:mysite_logout" %}?next={% url "blog:post_list"  %}">Logout</a></li> 
+    </ul>
+  </li>
+</ul>
+<a href="{% url "blog:post_list" %}">Home</a>
+Hi {{ user.username}}{% if user.is_staff %}<i>(Staff)</i>{% endif %}
+<p><a href="{% url "blog:mysite_logout" %}?next={% url "blog:post_list"  %}">Logout</a></p>{% endcomment %}
+{% else %}
+{% comment %}<form class="navbar-form navbar-right" role="form" action="{% url 'blog:mysite_login' %}"
+    method="post" accept-charset="utf-8">
+  <div class="form-group">
+    <input type="text" placeholder="Username" class="form-control" name="username">
+  </div>
+  <div class="form-group">
+    <input type="password" placeholder="Password" class="form-control" name="password">
+  </div>
+  {% csrf_token %}
+  <button type="submit" class="btn btn-success">Sign in</button>
+</form>{% endcomment %}
+
+
+<!--<a href="{% url "blog:post_list" %}">Home</a>-->
+<!--<a href="{% url "blog:mysite_login" %}?next={% url "blog:post_list"  %}">Login</a>-->
+<!--<a href="{% url "blog:mysite_signup" %}?next={% url "blog:post_list"  %}">Signup</a>-->
+{% endif %}

@@ -1,0 +1,26 @@
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+{% load crispy_forms_tags %}
+
+
+
+
+{% block content %}
+
+<h3>{% block title %}Signup{% endblock %}</h3>
+ 
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="form-group">
+
+        {{ field|as_crispy_field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Sign up</button>
+  </form>
+{% endblock %}
